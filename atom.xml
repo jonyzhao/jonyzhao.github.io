@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.wirelesswhale.com/"/>
-  <updated>2015-09-19T15:15:15.064Z</updated>
+  <updated>2015-09-26T13:13:13.060Z</updated>
   <id>http://www.wirelesswhale.com/</id>
   
   <author>
@@ -19,13 +19,13 @@
     <link href="http://www.wirelesswhale.com/2015/09/16/essay1/"/>
     <id>http://www.wirelesswhale.com/2015/09/16/essay1/</id>
     <published>2015-09-16T11:07:50.000Z</published>
-    <updated>2015-09-19T15:15:15.064Z</updated>
-    <content type="html"><![CDATA[<p>This is abstract.</p>
+    <updated>2015-09-26T13:13:13.060Z</updated>
+    <content type="html"><![CDATA[<p>This is abstract.<br>How long does it take to finish your homework?</p>
 <a id="more"></a>
 <p>This is more info. Thx.</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>This is abstract.</p>]]>
+    <![CDATA[<p>This is abstract.<br>How long does it take to finish your homework?</p>]]>
     
     </summary>
     
