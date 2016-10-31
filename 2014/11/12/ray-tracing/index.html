@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Ray Tracing 信道模型 | WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="意大背景是时分和频分在小区之间的复用已经被几乎充分的挖掘，空分成为提高系统吞吐量的新大陆。
+一种思路是：通过控制基站的发射功率、降低基站天线高度，从而减小其覆盖范围。而将同一片区域分的越小，复用带来的提升越大（暂不考虑多小区干扰和其他开销）。这就是small cell的设想。由于基站发射功率小了，还可以和绿色通信沾边。
+现在缺少的是好的信道仿真工具。华为直接出了一道题目放在今年的全国研究生数学建模">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ray Tracing 信道模型">
+<meta property="og:url" content="http://www.wirelesswhale.com/2014/11/12/ray-tracing/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="意大背景是时分和频分在小区之间的复用已经被几乎充分的挖掘，空分成为提高系统吞吐量的新大陆。
+一种思路是：通过控制基站的发射功率、降低基站天线高度，从而减小其覆盖范围。而将同一片区域分的越小，复用带来的提升越大（暂不考虑多小区干扰和其他开销）。这就是small cell的设想。由于基站发射功率小了，还可以和绿色通信沾边。
+现在缺少的是好的信道仿真工具。华为直接出了一道题目放在今年的全国研究生数学建模">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing1.jpg">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing2.jpg">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing3.jpg">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing4.jpg">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing5.jpg">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing6.jpg">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing6.jpg">
+<meta property="og:updated_time" content="2015-10-06T09:23:37.430Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ray Tracing 信道模型">
+<meta name="twitter:description" content="意大背景是时分和频分在小区之间的复用已经被几乎充分的挖掘，空分成为提高系统吞吐量的新大陆。
+一种思路是：通过控制基站的发射功率、降低基站天线高度，从而减小其覆盖范围。而将同一片区域分的越小，复用带来的提升越大（暂不考虑多小区干扰和其他开销）。这就是small cell的设想。由于基站发射功率小了，还可以和绿色通信沾边。
+现在缺少的是好的信道仿真工具。华为直接出了一道题目放在今年的全国研究生数学建模">
+<meta name="twitter:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing1.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ray-tracing" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/11/12/ray-tracing/" class="article-date">
+  <time datetime="2014-11-11T23:00:37.000Z" itemprop="datePublished">2014-11-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ray Tracing 信道模型
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="意"><a href="#意" class="headerlink" title="意"></a>意</h1><p>大背景是时分和频分在小区之间的复用已经被几乎充分的挖掘，空分成为提高系统吞吐量的新大陆。</p>
+<p>一种思路是：通过控制基站的发射功率、降低基站天线高度，从而减小其覆盖范围。而将同一片区域分的越小，复用带来的提升越大（暂不考虑多小区干扰和其他开销）。这就是small cell的设想。由于基站发射功率小了，还可以和绿色通信沾边。</p>
+<p>现在缺少的是好的信道仿真工具。华为直接出了一道题目放在今年的全国研究生数学建模里，指明用Ray-Tracing建立无线信道模型。这是不是说明华为也在做small cell呢？</p>
+<p>为什么选中Ray-Tracing这个看起来最麻烦最不现实的Model？<br>参见2013.3.31发布<a href="http://jasonzhao.info/blog/before2014-10/on-fading-channel-model/" target="_blank" rel="external">《衰落信道建模小议》</a>中对Ray-Tracing的特点概括。</p>
+<p>本篇接来下介绍我处理Ray-tracing信道建模的方法。<br><a id="more"></a></p>
+<h1 id="设"><a href="#设" class="headerlink" title="设"></a>设</h1><p>主要的假设有：考虑的是2-D平面，忽略屋顶绕射和地面反射（这是合理的，因为天线架设足够低呈峡谷式），仅考虑2-D平面上Tx点的发射信号经过若干次反射和绕射，到达Rx点的路径。一旦确定了路径，损耗和延时便可以确定。这种简化大大地提高了射线跟踪模型的预测效率，同时能够得到可以接受的预测精度。</p>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing1.jpg" alt="raytracing1"></p>
+<p>实际场景如图。封闭的方块表示建筑物，任意给定Tx，Rx位置，画出Tx通过反射和绕射到达Rx的路径。反射遵循反射角等于入射角，绕射含义是刚好射到顶点后，可能向各个方向散射。</p>
+<p>通过假设，使物理场景抽象为数学问题。剩下的主要工作，就是算法与数据结构了。通信人的技术软肋，可能编程算一个。</p>
+<h1 id="析"><a href="#析" class="headerlink" title="析"></a>析</h1><p>直观上的解法，这里命名为<strong>正向法</strong>。射出一条方向已知的射线，遇边则反射，遇顶点则绕射。在一定的限制内若能到达Rx，则保留路径，否则方向步进，进行下一轮测试。</p>
+<p>问题一：什么叫遇顶点？什么叫到达Rx？所以要设置一个邻域，射线落在邻域内即可。当然会损失一定的精度。</p>
+<p>问题二：步进值怎么设定？有人说先粗后细，而且如果两个步进的射线最后在Rx的不同侧，那么这两个角度范围内一定能找到足够接近Rx的方向。我说不一定。经过了图中的复杂地形，若将输入输出的关系视为函数，那么这个函数不连续，也就不能用二分法的思路。<br>这两个问题处理不好，正向算法将是空谈。</p>
+<p>下面介绍<strong>反向法</strong>，能绕开精度问题，一次性给出所有能准确到达Rx的路径。而且最后程序也实现了任意次以内的反射和绕射的组合路径搜寻。</p>
+<p>反向算法的想法来自于如下的简单事实。不妨先只考虑反射的情况。通过不断连接镜像点和上一步的实点，得到唯一的、准确的反射路径。后面会给出绕射也可以很方便的解决。</p>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing2.jpg" alt="raytracing2"></p>
+<p>当然，事先要知道Tx能通过CD边—AB边到达Rx。这种边的组合很多，如果穷举，放在图1的地图中，大致有80^7（2x10^13）条可能路径（很多路径到达不了Rx）。用树这种数据结构存储这些个路径，大致需要10^6GB空间。下面通过修剪枝叶，将这棵树剪到100kB的量级。建立好这棵树后，采用图2所示回溯的办法，得到所有正好通过Rx的路径。</p>
+<p>修剪的秘诀只有一条：<strong>模拟人眼可见范围</strong>，将可见范围内的边（或顶点）加入树。当树到达最大深度时，判断叶子节点到Rx的可见性。从可以见到Rx的节点回溯即可。</p>
+<p>可见性要分两种情况：实点（图Tx）和虚点（M关于边AB的镜像点M’）</p>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing3.jpg" alt="raytracing3"></p>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing4.jpg" alt="raytracing4"></p>
+<p>如果有人按这种思路编程，会发现全绕射树最容易建立，全反射树较难但思路清晰，反射加绕射的混合树能够利用之前的结果真应该谢天谢地。</p>
+<p>为了使计算机的处理结果更“自然”，同时尽量缩减树的规模，同时应对尽量全的极端情况（如Tx刚好在建筑物顶点上），需要考虑的太多了。在这里都不想讨论了，其实都是很有意思的逻辑挑战和编程挑战。强调一下MATLAB调试功能的丰富性和重要性。吐糟一下MATLAB不善于应付递归。</p>
+<p>从这中间可以抽象出来很多小技巧 + 典型算法。可以说，这是本次数模中最大的收获。列举几个：</p>
+<ol>
+<li><strong>怎样用矩阵存储一个不规则多叉树（同一个名字的节点可能出现多次，并可能在任意层），并且快速找到父亲节点。</strong>我的做法见文末A1</li>
+<li><strong>建立一棵树，如果用递归，请正确的写出来。建立混合树，怎样写出正确的交替递归（我自己起的名字，也许叫混合递归更好）。</strong>我的做法见文末A2。</li>
+<li><strong>给定两线段端点坐标，判断两线段是否相交？若是，求交点。由于这个操作使用的极为频繁，请给出你认为最快的算法。</strong>推荐算法见文末A3</li>
+<li><strong>判断一个点在一个多边形内部（也考虑凹多边形的情况）。</strong>很典型，自己搜搜。</li>
+</ol>
+<h1 id="悟"><a href="#悟" class="headerlink" title="悟"></a>悟</h1><p>除了上述奇技淫巧，以及算法能力上的锻炼，更持久的还是感性上的。<br>**</p>
+<ol>
+<li>一些不起眼的问题往往是核心。（如两线段是否相交）</li>
+<li>不要眼高手低。（正确的处理递归问题是很难得的修养）</li>
+<li>精妙的算法很棒，但合适的数据结构能在问题变得复杂后真正帮你大忙。（混合树的顺利建立得益于一开始考虑问题就考虑了一定程度的普适性）</li>
+<li>如何持续地、深入地思考一个问题。（兴奋地每天平均只睡4h）<br>**</li>
+</ol>
+<p>本文从通信偏题到编程了。Sorry。虽然编程能力尚不令人满意，但这回是实实在在的锻炼。</p>
+<h1 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h1><h2 id="A1"><a href="#A1" class="headerlink" title="A1"></a>A1</h2><p>全反射树伪代码：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">generateTree</span> <span class="params">(Node, Rx, depth)</span></span></div><div class="line">&#123;</div><div class="line">         <span class="keyword">if</span>(depth&lt;<span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line">         add_Node_to_TREE(Node);             <span class="comment">//将Node存储入一个全局树</span></div><div class="line">         S = find_All_Visible_Edges(Node);        <span class="comment">//找可见边作为子节点</span></div><div class="line">         <span class="keyword">for</span> i = <span class="number">1.</span>..Number_Of_Element(S)</div><div class="line">         &#123;</div><div class="line">                   generateTree(S(i), Rx, depth – <span class="number">1</span>);</div><div class="line">         &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//   每个节点是4x2矩阵：</span></div><div class="line"><span class="comment">//   父亲边(bd0,ed0)，bd0指明是哪一栋建筑，ed0指明是哪一条边</span></div><div class="line"><span class="comment">//   自己名字(bd,ed)//   自己的镜像点(mrx,mry)</span></div><div class="line"><span class="comment">//   所在层数(n(0..7),是否可以看到Rx)</span></div><div class="line"><span class="comment">//   若本节点是源点，则人为规定X=[-1,-1; 0,0; Tx(1),Tx(2); 0,NaN]</span></div></pre></td></tr></table></figure></p>
+<p>最终树MBT（Matrix Based Tree）的存储大致是这样的：<br><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing5.jpg" alt="raytracing5"></p>
+<p>这棵树最讨厌之处在于同一个名字的节点可能出现多次，并可能在任意层。因此这些点的子节点在根据父节点名字找父节点时，将找到多个“父亲”。由于采用如下的递归方式建树，寻找真父节点也存在一个窍门。</p>
+<ul>
+<li>准则一：父节点的列号一定小于其子节点的列号。</li>
+<li>准则二：若有多个小于子节点列号的同名父节点，则真父节点为最靠近子节点的那个。<br>根据这两个准则，已知某节点的列号和层数，则在矩阵中从该列号开始向左，找层数比这个节点小1且名字等于这个节点父节点名字的节点所在的列号，即可。</li>
+</ul>
+<h2 id="A2"><a href="#A2" class="headerlink" title="A2"></a>A2</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">generateTREE</span><span class="params">(Node,Rx,depth,MODE)</span></span></div><div class="line">&#123;</div><div class="line">         <span class="keyword">if</span> (depth&lt;<span class="number">0</span>) <span class="keyword">return</span>;</div><div class="line">         <span class="keyword">if</span> (condition)         <span class="comment">//通过一个全局辅助变量辅助判断</span></div><div class="line">         &#123;</div><div class="line">                   change MODE</div><div class="line">         &#125;</div><div class="line">         <span class="keyword">if</span> (MODE == <span class="number">1</span>)        </div><div class="line">         &#123;</div><div class="line">                   PointSet = find_All_Visible_Points(Node);</div><div class="line">                   <span class="keyword">for</span> i=<span class="number">1</span>…Number_Of_Elements(PointSet)</div><div class="line">                   &#123;</div><div class="line">                            generateTREE(PointSet(i), Rx, depth<span class="number">-1</span>,MODE);</div><div class="line">                   &#125;</div><div class="line">         elseif (MODE == <span class="number">0</span>)   </div><div class="line">         &#123;</div><div class="line">                   EdgeSet = find_All_Visible_Edges(Node);</div><div class="line">                   <span class="keyword">for</span> i=<span class="number">1</span>…Number_Of_Elements(EdgeSet)</div><div class="line">                   &#123;</div><div class="line">                            generateTREE(EdgeSet(i), Rx, depth<span class="number">-1</span>,MODE);</div><div class="line">                   &#125;</div><div class="line">         &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="A3"><a href="#A3" class="headerlink" title="A3"></a>A3</h2><p><a href="http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect" target="_blank" rel="external">http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect</a></p>
+<h2 id="A4"><a href="#A4" class="headerlink" title="A4"></a>A4</h2><p>对了最后贴几张正向和反向的结果图好了。<br>正向<br><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing6.jpg" alt="raytracing6"><br>反向<br><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-raytracing6.jpg" alt="raytracing7"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2014/11/12/ray-tracing/" data-id="ciuy95ly0001a34uzkky3futv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信道建模/">信道建模</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/通信/">通信</a></li></ul>
+
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/20/norm2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          二范数下几个问题的统一解释
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/11/11/winner2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">信道仿真模型：WINNER II (for MIMO)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2014/11/12/ray-tracing/" data-title="Ray Tracing 信道模型" data-url="http://www.wirelesswhale.com/2014/11/12/ray-tracing/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

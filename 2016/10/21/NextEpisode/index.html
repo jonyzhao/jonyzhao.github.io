@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），这些内容要么网上总结的太分散，要么不太对，有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。这里先写个大纲，未来可能用若干篇文章的形式加以补充。可能对初学者更有用，有待老司机们指正。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WirelessWhale">
+<meta property="og:url" content="http://www.wirelesswhale.com/2016/10/21/NextEpisode/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），这些内容要么网上总结的太分散，要么不太对，有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。这里先写个大纲，未来可能用若干篇文章的形式加以补充。可能对初学者更有用，有待老司机们指正。">
+<meta property="og:updated_time" content="2016-10-21T08:45:00.596Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="WirelessWhale">
+<meta name="twitter:description" content="这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），这些内容要么网上总结的太分散，要么不太对，有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。这里先写个大纲，未来可能用若干篇文章的形式加以补充。可能对初学者更有用，有待老司机们指正。">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-NextEpisode" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/10/21/NextEpisode/" class="article-date">
+  <time datetime="2016-10-21T08:32:59.000Z" itemprop="datePublished">2016-10-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。<br>当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），<br>这些内容要么网上总结的太分散，要么不太对，<br>有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。<br>这里先写个大纲，未来可能用若干篇文章的形式加以补充。<br>可能对初学者更有用，有待老司机们指正。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="Unity相关"><a href="#Unity相关" class="headerlink" title="Unity相关"></a>Unity相关</h1><ul>
+<li><p><strong>资源的管理</strong></p>
+<ul>
+<li>主要涉及<code>AssetBunde</code>、<code>Resource</code>、<code>StreamingAssets</code>相关内容，谈谈其特点该如何被应用到项目需求中去，例如：动态加载、热更新、按目录读取等。</li>
+<li>顺便会总结一下unity中的几个path在不同平台上对应的真实路径，不要用混淆了。</li>
+<li>可能会尝试深入unity的prefab。</li>
+</ul>
+</li>
+<li><p><strong>uGUI层级管理</strong></p>
+<ul>
+<li>作为unity的新UI系统，总体来说挺好用，屏幕自适应方面的工具很强大。</li>
+<li>另一个重要的话题是层级管理，也就是多个界面元素谁显示在谁前面？用<code>camera</code>？<code>sortLayer</code>？<code>canvas</code>？设置中的depth、sortingOrder等等各有什么作用，某些需求应该怎么实现。这种零碎又容易忘的东西需要整理一下。</li>
+</ul>
+</li>
+<li><p><strong>自动构建与打包</strong></p>
+<ul>
+<li>在初期就接触到这个还是满幸运的，因为里面坑很多，网文很多，但每个人的开发环境和面临的具体问题都不一样，纸上得来终觉浅，绝知此事要躬行！</li>
+</ul>
+</li>
+<li><p>2D动画工具</p>
+<ul>
+<li>骨骼动画、帧动画；</li>
+<li>以及unity5的<code>Animator</code>、<code>Animation</code>系统的使用备忘。</li>
+</ul>
+</li>
+<li><p>编辑器开发<br>也就是给unity本身写一些插件，辅助开发。这里头学问也很大，只打算记录一下自己用过的一些editor辅助类和gismoz辅助线。</p>
+</li>
+</ul>
+<h1 id="游戏相关"><a href="#游戏相关" class="headerlink" title="游戏相关"></a>游戏相关</h1><ul>
+<li><strong>我觉得好用的游戏模式</strong><ul>
+<li>对于游戏中常见的<strong>设计模式</strong>，可以自行阅读《游戏设计模式》，愿意看英文的直接去这里： <a href="http://www.gameprogrammingpatterns.com/contents.html" target="_blank" rel="external">http://www.gameprogrammingpatterns.com/contents.html</a><br>目前我觉得最常用的大概就是单例、观察者、状态。</li>
+<li><strong>框架模式</strong>在我看来是高于设计模式的，是对游戏代码进行组织的方法。虽然我也想写随性的代码，但一旦项目超过10万行，就有必要在一开始建立一个好用的框架了。这里要从web前端开发中借鉴一些经验。他们用的弱类型脚本语言太过自由，所以必须要有各种框架来支撑（例如React），否则就像没有钢筋堆砌起来的大楼，难以开发和维护。在实践中，我采用了类似<strong>MVP</strong>的架构模式，将会结合游戏开发进行具体说明。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p><strong>怎样有条理的派发、监听、处理事件</strong><br>陆续也见过好几个项目的源码了，大家都封装了一层自己的消息处理机制，做法各不相同，大都是与框架模式配合起来使用的。所以这里只谈另一点：为什么要对本地消息进行缓存和加锁，以及一个简单的实现demo，可以作为今后的模版。</p>
+</li>
+<li><p><strong>一个有趣的需求</strong></p>
+<ul>
+<li>工作之余（晚上11点到1点左右）做的一个小游戏，其中运动部分用到一些几何、插值的数学相关内容和unity中的特性，以后再写此类有关运动的就会有些经验了吧。效果不错，有必要总结一下。</li>
+</ul>
+</li>
+</ul>
+<h1 id="最后的吐槽"><a href="#最后的吐槽" class="headerlink" title="最后的吐槽"></a>最后的吐槽</h1><p>阴阳师好看而不好玩，崩坏3的女武神们还在等着我。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2016/10/21/NextEpisode/" data-id="ciuy95lwa000434uz92mmtarl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂谈/">杂谈</a></li></ul>
+
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/06/16/talk-about-cocos/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">王哲谈Cocos未来</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2016/10/21/NextEpisode/" data-title="" data-url="http://www.wirelesswhale.com/2016/10/21/NextEpisode/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

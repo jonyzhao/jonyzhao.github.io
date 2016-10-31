@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>GP-GPU编程：CUDA入门 | WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文简要介绍了利用GPU进行通用计算的历史和方法，以NVDIA家的CUDA架构为例，介绍GPGPU编程的重要概念和简单实践。希望能够在浩如烟海的网络资料之外，给像我这样的初学者提供一些清晰的参考。CUDA C的学习资料在文末给出，NVDIA的官方文档干净友好，听说社区生态也堪称典范，好感度+1。
+1234567891 简介	1.1 历史	1.2 现状2 概念	2.1 硬件特点	2.2 并行层次	2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GP-GPU编程：CUDA入门">
+<meta property="og:url" content="http://www.wirelesswhale.com/2015/02/28/gpgpu-cuda/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="本文简要介绍了利用GPU进行通用计算的历史和方法，以NVDIA家的CUDA架构为例，介绍GPGPU编程的重要概念和简单实践。希望能够在浩如烟海的网络资料之外，给像我这样的初学者提供一些清晰的参考。CUDA C的学习资料在文末给出，NVDIA的官方文档干净友好，听说社区生态也堪称典范，好感度+1。
+1234567891 简介	1.1 历史	1.2 现状2 概念	2.1 硬件特点	2.2 并行层次	2">
+<meta property="og:image" content="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/floating-point-operations-per-second.png">
+<meta property="og:image" content="http://img.blog.csdn.net/20130725194814437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQva2trNTg0NTIw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:image" content="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/grid-of-thread-blocks.png">
+<meta property="og:updated_time" content="2015-10-06T09:27:42.171Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GP-GPU编程：CUDA入门">
+<meta name="twitter:description" content="本文简要介绍了利用GPU进行通用计算的历史和方法，以NVDIA家的CUDA架构为例，介绍GPGPU编程的重要概念和简单实践。希望能够在浩如烟海的网络资料之外，给像我这样的初学者提供一些清晰的参考。CUDA C的学习资料在文末给出，NVDIA的官方文档干净友好，听说社区生态也堪称典范，好感度+1。
+1234567891 简介	1.1 历史	1.2 现状2 概念	2.1 硬件特点	2.2 并行层次	2">
+<meta name="twitter:image" content="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/floating-point-operations-per-second.png">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-gpgpu-cuda" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/02/28/gpgpu-cuda/" class="article-date">
+  <time datetime="2015-02-28T04:52:33.000Z" itemprop="datePublished">2015-02-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GP-GPU编程：CUDA入门
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文简要介绍了利用GPU进行通用计算的历史和方法，以NVDIA家的CUDA架构为例，介绍GPGPU编程的重要概念和简单实践。希望能够在浩如烟海的网络资料之外，给像我这样的初学者提供一些清晰的参考。CUDA C的学习资料在文末给出，NVDIA的官方文档干净友好，听说社区生态也堪称典范，好感度+1。</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="number">1</span> 简介</div><div class="line">	<span class="number">1.1</span> 历史</div><div class="line">	<span class="number">1.2</span> 现状</div><div class="line"><span class="number">2</span> 概念</div><div class="line">	<span class="number">2.1</span> 硬件特点</div><div class="line">	<span class="number">2.2</span> 并行层次</div><div class="line">	<span class="number">2.3</span> 通信机制</div><div class="line">	<span class="number">2.4</span> 性能优化</div><div class="line"><span class="number">3</span> 实践</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h1><h2 id="1-1-历史"><a href="#1-1-历史" class="headerlink" title="1.1 历史"></a>1.1 历史</h2><p>近30年来，提升CPU计算性能的主要方法就是提升时钟频率。此方法在目前的硅基半导体工艺下已进入瓶颈，转而用“并行”来提升计算性能（例如多核）。</p>
+<p>自1980年代起，一家名为Silicon Graphics的公司在业界推广OpenGL用于渲染三维图像，获得了广泛支持。NVIDIA、ATI等公司也开始对计算机3D图形计算加速进行研究，并将此硬件设备称为“GPU”以区别于传统的CPU。GPU由于其结构特点，具备强大的并行计算能力。（1999年，GPU的始祖GeForce 256横空出世。2002年完整支持DX9的王者Radeon 9700Pro正式开启了GPU的众神时代，Age of Gods. 显卡爱好者可以看看此文：<a href="http://digi.163.com/13/0802/05/958G180300162DSP_all.html" target="_blank" rel="external">视觉时代的回响 GPU十年历史追忆</a>。）</p>
+<p>在很长一段时间里，利用GPU进行渲染是通过OpenGL和DirectX进行的。人们发现传给GPU进行像素点渲染的颜色、纹理坐标等信息其实可以是任何数据，即GPU可以用于通用计算（General Purpose  GPU， GPGPU）。然而当时的GPU有着难以在显存任意位置进行读写、GPU本身也不具备浮点计算能力、GPU难以debug等严重缺点。更糟的是，必须使用一种叫“shader language”的编程语言，利用OpenGL和DirectX提供的API对GPU进行操作。利用GPU进行通用计算的巨大的学习成本，使得研究人员望而却步。</p>
+<p>对于上述硬件缺点，NVDIA推出了基于CUDA架构的GPU，如2006年上市的高端卡<a href="http://en.wikipedia.org/wiki/GeForce_8_series#GeForce_8800_Series" target="_blank" rel="external">GeForce 8800 GTX</a>；对于上述软件缺点，NVDIA在C的基础上进行扩展，并在GeForce 8800 GTX上市后几个月后公布CUDA C语言及相应的编译器用于GPGPU的编程。</p>
+<h2 id="1-2-现状"><a href="#1-2-现状" class="headerlink" title="1.2 现状"></a>1.2 现状</h2><ul>
+<li>性能</li>
+</ul>
+<p>就个人电脑来说，目前的顶级CPU，主频也很难上4GHz，而核心数量很难达到16个（计算能力约64GFLOPS）。而稍微高端点的GPU早就超过3000GFLOPS（以GTX 690为例，核心频率约1GHz，3072个核心）。国外已有建立在Tesla k40集群上的超算中心。下面一图以蔽之吧。</p>
+<p><img src="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/floating-point-operations-per-second.png" alt=""></p>
+<ul>
+<li>GPGPU应用<br>耳熟能详的GPU应用诸如：视景仿真、视频渲染。以及石油勘探、环境科学、航空航天和流体力学计算等领域。<br>举几个典型且较新的例子：医疗成像。智能汽车。深度学习。</li>
+</ul>
+<h1 id="2-概念"><a href="#2-概念" class="headerlink" title="2 概念"></a>2 概念</h1><h2 id="2-1-硬件"><a href="#2-1-硬件" class="headerlink" title="2.1 硬件"></a>2.1 硬件</h2><ul>
+<li>Device, Host</li>
+</ul>
+<p>CPU和内存（host memory）是host，GPU和显存（device memory）是device。</p>
+<ul>
+<li>SM, SP</li>
+</ul>
+<p>SM：Stream-Multiprocessor，俗称“大核”。SP：Stream-Processor，俗称“小核”。</p>
+<p><img src="http://img.blog.csdn.net/20130725194814437?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQva2trNTg0NTIw/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt=""></p>
+<ul>
+<li>Global memory</li>
+</ul>
+<p>就是通常意义上的显存。</p>
+<ul>
+<li>Shared memory</li>
+</ul>
+<p>为同一个block中若干threads所共享。 存取非常快，可看作user-managed cache。CUDA C中的关键词：<code>__shared__</code></p>
+<ul>
+<li>Constant memory</li>
+</ul>
+<h2 id="2-2-并行层次"><a href="#2-2-并行层次" class="headerlink" title="2.2 并行层次"></a>2.2 并行层次</h2><p>并行是一个概念，可以用在不同的层面。CUDA中从高到低有以下几个层次：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">stream -&gt; grid -&gt; block -&gt; (warp) -&gt; thread.</div></pre></td></tr></table></figure></p>
+<p><img src="http://docs.nvidia.com/cuda/cuda-c-programming-guide/graphics/grid-of-thread-blocks.png" alt=""></p>
+<p>并行层次与存储层次是对应的。</p>
+<ul>
+<li>thread</li>
+</ul>
+<p>并行的基本单位。同一个block中的thread通过shared memory共享数据。同一个block中的thread通过<code>__syncthreads()</code>同步，具体见下一节。</p>
+<ul>
+<li>warp</li>
+</ul>
+<p>In the world of weaving, a warp refers to the group of threads being woven together into fabric. In the CUDA Architecture, a warp refers to a collection of <strong>32 threads</strong> that are “woven together” and get executed in lockstep. At every line in your program, each thread in a warp executes the same instruction on different data.</p>
+<p>When it comes to handling constant memory, NVIDIA hardware can broadcast a single memory read to each half-warp. A half-warp—not nearly as creatively<br>named as a warp—is a group of 16 threads: half of a 32-thread warp. If every thread in a half-warp requests data from the same address in constant memory,<br>your GPU will generate only a single read request and subsequently broadcast the data to every thread. If you are reading a lot of data from constant memory,<br>you will generate only 1/16 (roughly 6 percent) of the memory traffic as you would when using global memory.*   ### block</p>
+<p>最大支持512个threads。只用一个block不能充分利用GPU的资源。</p>
+<ul>
+<li>grid</li>
+</ul>
+<p>We call the collection of parallel blocks a grid. 同一个grid中的所有thread都执行相同参数的核函数。</p>
+<ul>
+<li>stream</li>
+</ul>
+<p>A stream is a sequence of commands (possibly issued by different host threads) that execute in order. this behavior is not guaranteed and should therefore not be relied upon for correctness (e.g., inter-kernel communication is undefined). 不同stream可执行不同参数的核函数。*   示例：kernel launch中的参数配置</p>
+<h2 id="2-3-通信机制"><a href="#2-3-通信机制" class="headerlink" title="2.3 通信机制"></a>2.3 通信机制</h2><ul>
+<li>Inter-thread level</li>
+</ul>
+<p>主要的通信机制有：</p>
+<ol>
+<li>shared memory. 要求是同一个block中的threads。</li>
+<li>内置函数 <code>__syncthreads()</code>. 作用是当某个线程执行到该函数时，进入等待状态，直到同一线程块（Block）中所有线程都执行到这个函数为止。</li>
+<li>原子操作。可以跨block。</li>
+</ol>
+<p>示例伪代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">this</span> is thread A</div><div class="line">	write something to Shared Memory;</div><div class="line">end <span class="keyword">if</span></div><div class="line">__syncthreads();</div><div class="line"><span class="keyword">if</span> <span class="keyword">this</span> is thread B</div><div class="line">	read something from Shared Memory;</div><div class="line">end <span class="keyword">if</span></div></pre></td></tr></table></figure>
+<ul>
+<li><p>Inter-block level</p>
+</li>
+<li><p>Inter-stream level</p>
+</li>
+</ul>
+<h2 id="2-4-性能优化"><a href="#2-4-性能优化" class="headerlink" title="2.4 性能优化"></a>2.4 性能优化</h2><h1 id="3-实践"><a href="#3-实践" class="headerlink" title="3 实践"></a>3 实践</h1><h2 id="3-1-环境搭建"><a href="#3-1-环境搭建" class="headerlink" title="3.1 环境搭建"></a>3.1 环境搭建</h2><p>采用64位win7 + visual studio 2013 + cuda toolkit 6.5 。早期的cuda环境需要下载cuda toolkit、drivers、cuda SDK，现在全部打包到一起了。Cuda Toolkit 6.5下载地址：<a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">官网</a></p>
+<p>关于软硬件兼容性的问题，2010年的老显卡（指笔者的Quadro NVS 3100M 。怎么样，没听过吧，说多都是泪……此卡介于G210M~G310M之间）仍可以安装 6.5 版，基本可以放心下载。</p>
+<p>完整的搭建过程参考官方文档 <a href="http://developer.download.nvidia.com/compute/cuda/6_5/rel/docs/CUDA_Getting_Started_Windows.pdf" target="_blank" rel="external">[PDF]</a></p>
+<h2 id="3-2-常见问题"><a href="#3-2-常见问题" class="headerlink" title="3.2 常见问题"></a>3.2 常见问题</h2><ul>
+<li><h3 id="warning-C4819"><a href="#warning-C4819" class="headerlink" title="warning: C4819"></a>warning: C4819</h3></li>
+</ul>
+<p><a href="https://devtalk.nvidia.com/default/topic/809956/how-to-tell-nvcc-exe-disable-to-print-some-warning-information-/?offset=2" target="_blank" rel="external">原文。</a>只需在项目properties-&gt;configuration properties-&gt;CUDA C/C++的Additional options那里加一行：<code>-Xcompiler /wd4819</code></p>
+<ul>
+<li><h3 id="error：expected-and-expression-不能识别”-lt-lt-lt-”"><a href="#error：expected-and-expression-不能识别”-lt-lt-lt-”" class="headerlink" title="error：expected and expression (不能识别”&lt;&lt;&lt;”)"></a>error：expected and expression (不能识别”&lt;&lt;&lt;”)</h3></li>
+</ul>
+<p>首先检查出错的代码文件的属性中，item type是不是CUDA C/C++。如果是，则没有大碍，只是VS的C/C++文本编辑器认为有错，编译器可以通过。<a href="http://stackoverflow.com/questions/6061565/setting-up-vs-2010-intellisense-for-cuda-kernel-calls" target="_blank" rel="external">这里</a>提到一种自定义宏的方法消除这个小bug。</p>
+<ul>
+<li><h3 id="error：addKernel-launch-failed-invalid-device-function"><a href="#error：addKernel-launch-failed-invalid-device-function" class="headerlink" title="error：addKernel launch failed: invalid device function"></a>error：addKernel launch failed: invalid device function</h3></li>
+</ul>
+<h2 id="3-3-常用工具"><a href="#3-3-常用工具" class="headerlink" title="3.3 常用工具"></a>3.3 常用工具</h2><ul>
+<li><h3 id="deviceQuery-exe"><a href="#deviceQuery-exe" class="headerlink" title="deviceQuery.exe"></a>deviceQuery.exe</h3></li>
+</ul>
+<p>CUDA Samples中自带的检测显卡信息的工具。可以方便的查看显卡的基本信息。如：</p>
+<ul>
+<li>型号</li>
+<li>Compute capability</li>
+<li>核心数量（大核SM、小核SP）</li>
+<li>时钟频率</li>
+<li>global memory</li>
+<li>const memory</li>
+<li>shared memory/block</li>
+<li><p>最大threads、block、grid限制等</p>
+</li>
+<li><h3 id="bandwidthTest-exe"><a href="#bandwidthTest-exe" class="headerlink" title="bandwidthTest.exe"></a>bandwidthTest.exe</h3></li>
+</ul>
+<p>CUDA Samples中自带的测试Device和Host之间带宽的工具。还有个重要功能是搭建CUDA环境后验证是否正常运转（看最后Result是否为PASS）</p>
+<ul>
+<li><h3 id="Visual-Profiler"><a href="#Visual-Profiler" class="headerlink" title="Visual Profiler"></a>Visual Profiler</h3></li>
+</ul>
+<h2 id="3-4-学习资料"><a href="#3-4-学习资料" class="headerlink" title="3.4 学习资料"></a>3.4 学习资料</h2><p>通常下载了NVDIA的CUDA Toolkit后，其中丰富的Samples和doc就是第一手的好材料。下面列出一些补充材料（主要来自Quora上的推荐），有些已经被包含在v6.5的toolkit之中。</p>
+<h3 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h3><ul>
+<li>CUDA C Programming Guide <a href="http://docs.nvidia.com/cuda/pdf/CUDA_C_Programming_Guide.pdf" target="_blank" rel="external">[PDF]</a></li>
+<li>CUDA C Best Practices Guide <a href="http://docs.nvidia.com/cuda/pdf/CUDA_C_Best_Practices_Guide.pdf" target="_blank" rel="external">[PDF]</a></li>
+</ul>
+<h3 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h3><ul>
+<li>Introduction to CUDA C. <a href="http://www.cc.gatech.edu/~vetter/keeneland/tutorial-2012-02-20/07-intro_to_cuda_c.pdf" target="_blank" rel="external">[PDF]</a></li>
+</ul>
+<h3 id="公开课"><a href="#公开课" class="headerlink" title="公开课"></a>公开课</h3><ul>
+<li>Intro to Parallel Programming: Using CUDA to Harness the Power of GPUs <a href="https://www.udacity.com/course/cs344" target="_blank" rel="external">[地址]</a>  </li>
+</ul>
+<h3 id="博客"><a href="#博客" class="headerlink" title="博客"></a>博客</h3><ul>
+<li>CUDA C从入门到精通 <a href="http://blog.chinaunix.net/uid-20620288-id-4705367.html" target="_blank" rel="external">[地址]</a></li>
+</ul>
+<h3 id="论坛"><a href="#论坛" class="headerlink" title="论坛"></a>论坛</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2015/02/28/gpgpu-cuda/" data-id="ciuy95lwa000534uzqw7twpq9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CUDA/">CUDA</a></li></ul>
+
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/03/20/my-ml-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          通信人的机器学习笔记（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/02/15/je-suis-charlie/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">我是查理（Je suis Charlie）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2015/02/28/gpgpu-cuda/" data-title="GP-GPU编程：CUDA入门" data-url="http://www.wirelesswhale.com/2015/02/28/gpgpu-cuda/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

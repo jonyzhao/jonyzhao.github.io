@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>通信人的机器学习笔记（一） | WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最近有些懒，看的东西也比较肤浅，真是不好意思起标题。这篇就聊一聊通信系统和机器学习之间的联系吧，一家之言，仅供参考~另外推荐有基础的同学看《The elements of statistical learning》这本书（后文皆以ESL代替），讲的挺好。
+(a)机器学习和通信接收机的步骤类似。
+
+121.  前者先训练，后判断；2.  后者先估计信道，后译码。
+(b)机器学习的训练过程和通信">
+<meta property="og:type" content="article">
+<meta property="og:title" content="通信人的机器学习笔记（一）">
+<meta property="og:url" content="http://www.wirelesswhale.com/2015/03/20/my-ml-1/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="最近有些懒，看的东西也比较肤浅，真是不好意思起标题。这篇就聊一聊通信系统和机器学习之间的联系吧，一家之言，仅供参考~另外推荐有基础的同学看《The elements of statistical learning》这本书（后文皆以ESL代替），讲的挺好。
+(a)机器学习和通信接收机的步骤类似。
+
+121.  前者先训练，后判断；2.  后者先估计信道，后译码。
+(b)机器学习的训练过程和通信">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-myml1_1.png">
+<meta property="og:image" content="http://jasonzhao.info/blog/wp-content/uploads/2015/03/myml1_2.png">
+<meta property="og:updated_time" content="2015-10-01T02:53:52.374Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="通信人的机器学习笔记（一）">
+<meta name="twitter:description" content="最近有些懒，看的东西也比较肤浅，真是不好意思起标题。这篇就聊一聊通信系统和机器学习之间的联系吧，一家之言，仅供参考~另外推荐有基础的同学看《The elements of statistical learning》这本书（后文皆以ESL代替），讲的挺好。
+(a)机器学习和通信接收机的步骤类似。
+
+121.  前者先训练，后判断；2.  后者先估计信道，后译码。
+(b)机器学习的训练过程和通信">
+<meta name="twitter:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-myml1_1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-my-ml-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/20/my-ml-1/" class="article-date">
+  <time datetime="2015-03-20T04:08:13.000Z" itemprop="datePublished">2015-03-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      通信人的机器学习笔记（一）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+<p>最近有些懒，看的东西也比较肤浅，真是不好意思起标题。这篇就聊一聊通信系统和机器学习之间的联系吧，一家之言，仅供参考~另外推荐有基础的同学看《The elements of statistical learning》这本书（后文皆以ESL代替），讲的挺好。</p>
+<h2 id="a"><a href="#a" class="headerlink" title="(a)"></a>(a)</h2><p>机器学习和通信接收机的步骤类似。</p>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-myml1_1.png" alt="myml1_1"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1.  前者先训练，后判断；</div><div class="line">2.  后者先估计信道，后译码。</div></pre></td></tr></table></figure>
+<h2 id="b"><a href="#b" class="headerlink" title="(b)"></a>(b)</h2><p>机器学习的训练过程和通信接收的信道估计都是按照以下步骤进行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1.  问题建模</div><div class="line">2.  通过一些假设对系统内在结构进行一些限定</div><div class="line">3.  确定估计系统的准则</div><div class="line">4.  在此准则下，确定搜索最优解的方法</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h2 id="c"><a href="#c" class="headerlink" title="(c)"></a>(c)</h2><p>ESL 2.8节，将估计器分为三类。这三类是互相关联而非互斥的，有些方法可以同时归入多个类。之所以这么分是为了粗略讨论的方便。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">1.  roughness penalty &amp; Bayesian methods</div><div class="line">2.  kernel methods &amp; <span class="built_in">local</span> regression  （或称为kernel smoothing method，不要与机器学习中的SVM的核方法混淆）</div><div class="line">3.  basis <span class="built_in">functions</span> &amp; dictionary methods</div></pre></td></tr></table></figure>
+<h2 id="d"><a href="#d" class="headerlink" title="(d)"></a>(d)</h2><p>我这里从另一种思路，依据(b)给出我的分类法。（这里的分类是不严谨的概念，意会即可）</p>
+<ol>
+<li><p>作用于(b)02的方法。即直接对(f(x))进行限制。</p>
+<pre><code>*   basis function
+</code></pre></li>
+<li><p>作用于(b)03的方法。即间接对(f(x))进行限制。</p>
+<pre><code>*   impose penalty. (又作regularization)
+
+通过在原始的准则（如RSS）上加关于\(f(x)\)某种特性的惩罚，使得最终的解不具备这种性质。
+
+*   采用更一般的或更适合问题的准则。
+
+例如LS采用的准则是ML的特例。例如采用L1-norm而不是L2-norm对某些问题更有效。
+
+*   kernel method
+
+通过在原始的准则（如RSS）中引入邻域的概念，使得 更具灵活性，防止出现LS那样的全局僵化。（K-nearest-neighbour是其特例）
+</code></pre></li>
+<li>作用于(b)04，其实属于搜索算法。例如梯度下降。</li>
+</ol>
+<h2 id="e"><a href="#e" class="headerlink" title="(e)"></a>(e)</h2><p> 机器学习的方法不可谓不多，但都是在bias和variance取折衷。ESL开篇就介绍了位于两个极端的方法：Least Squares（LS）和K-nearest neighbours（KNN）。前者为所有的训练值设定了一组全局的、固定的参数，表现为低bias，高variance。后者表面上只有一个参数：K，其实别有洞天（文末会单独说），表现为高bias，低variance。</p>
+<h2 id="f"><a href="#f" class="headerlink" title="(f)"></a>(f)</h2><p>这里要自嘲一下。我是通信出身的，一开始看ESL是这种想法：一个合格的估计（训练）方法，首先得是无偏的吧。而Gauss-Markov定理都告诉我们了，在所有的线性无偏估计中，LS具有最小的方差。所以LS不是挺好的吗。大不了引入随机量，不就是把LS演变成最小均方误差（MMSE）嘛？若要还玩什么花，那就在代价函数上做功夫，这不就是regularization吗？而且你看linear regression中的ridge regression，不就是MMSE嘛。logistic regression，不就是最大似然译码嘛。linear discriminate regression，不就是高斯噪声下的MAP译码嘛。这5个“不就是”，让我以为机器学习大抵是信号估计的那一套，换一个场景，添一些具体方法，如是而已。现在发现，当时还是naive……</p>
+<p>1.首先，无偏估计不一定就比有偏的好。error可以分解为两项，bias的平方和variance。error最小的模型参数可能是bias和variance的折中，见下图</p>
+<p><img src="http://jasonzhao.info/blog/wp-content/uploads/2015/03/myml1_2.png" alt="myml1_2"></p>
+<ol>
+<li>是的，对于基本的生成模型，机器学习和通信中常用的方法本质是一致的。但机器学习还有针对另一种情景下的模型，例如混合高斯模型（GMM）。这时就需要偏向于KNN类型的方法了。对于大小为N的训练集，KNN表面上只有一个参数K，而且不对模型做任何限定，只取距离测试点“距离最近”的K个训练值的平均作为估计值。真的只有一个参数，便能获得比LS更高的解析力吗？不是的，KNN其实将空间划分为N/K个不交叠的子空间，因此具有N/K个等效参数（举个K=1时的例子，为了不用每次都查找距离最近的点，可以用泰森三角形法将空间分成N个三角形区域，测试点落在哪个三角形内，直接就能知道其距离哪个点最近。）。往往N很大，N/K大大超过LS中所使用的参数数量，所以在N很大的情况下KNN的效果很好。</li>
+</ol>
+<p>在L2-norm形式的损失下，Expected Prediction Error表示式为：[f(x) = {\rm{E}}(Y|X = x)]而KNN用下式对其进行近似：[f(x) \approx {\rm{Ave}}({y_i}|{x_i} \in {N_k}(x))]可以证明，当N,k趋于无穷且k/N趋于0，上式将趋于理论最优解。</p>
+<p>但此法存在的问题在于：</p>
+<ol>
+<li>x的维度p增大，邻域等效为x将失效，趋于理论最优仍成立，但收敛的速度很慢。</li>
+<li>要求训练集足够大，否则次算法的性能不稳定。相对来说LS法要稳定的多。</li>
+</ol>
+<h2 id="g"><a href="#g" class="headerlink" title="(g)"></a>(g)</h2><p>本篇写的比较破碎，就当是闲聊。机器学习迸发出的活力，反过来在推动传统的通信和信号处理向新的方向迈进。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2015/03/20/my-ml-1/" data-id="ciuy95lx5000p34uzoto6bx1j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信号处理/">信号处理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/通信/">通信</a></li></ul>
+
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/10/mryu-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          听校友于敦德先生演讲有感
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/02/28/gpgpu-cuda/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">GP-GPU编程：CUDA入门</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2015/03/20/my-ml-1/" data-title="通信人的机器学习笔记（一）" data-url="http://www.wirelesswhale.com/2015/03/20/my-ml-1/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>

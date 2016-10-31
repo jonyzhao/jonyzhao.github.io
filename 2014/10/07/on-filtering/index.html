@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>想想滤波 | WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="摸清背景，理清思路，探讨意义~
+我关于滤波的理解:
+
+在频域内对信号中某些频率分量进行衰减。关键词：低通、高通。典型的场景是将一段音乐中不同频段的声音分别抽取出来。
+空间域内对不同尺度的细节进行处理。关键词：图像处理，滤镜。典型的场景是将一张被关在笼子里的老虎的照片“还原”出被笼子挡住的部分，有点透视的意味。
+已经超出了两个字的字面意思，甚至也超出了频域、空域的范畴，进入了统计的领域。
+
+扑面而来">
+<meta property="og:type" content="article">
+<meta property="og:title" content="想想滤波">
+<meta property="og:url" content="http://www.wirelesswhale.com/2014/10/07/on-filtering/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="摸清背景，理清思路，探讨意义~
+我关于滤波的理解:
+
+在频域内对信号中某些频率分量进行衰减。关键词：低通、高通。典型的场景是将一段音乐中不同频段的声音分别抽取出来。
+空间域内对不同尺度的细节进行处理。关键词：图像处理，滤镜。典型的场景是将一张被关在笼子里的老虎的照片“还原”出被笼子挡住的部分，有点透视的意味。
+已经超出了两个字的字面意思，甚至也超出了频域、空域的范畴，进入了统计的领域。
+
+扑面而来">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-wiener.png">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-on-filtering-1.PNG">
+<meta property="og:updated_time" content="2015-10-07T14:49:00.814Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="想想滤波">
+<meta name="twitter:description" content="摸清背景，理清思路，探讨意义~
+我关于滤波的理解:
+
+在频域内对信号中某些频率分量进行衰减。关键词：低通、高通。典型的场景是将一段音乐中不同频段的声音分别抽取出来。
+空间域内对不同尺度的细节进行处理。关键词：图像处理，滤镜。典型的场景是将一张被关在笼子里的老虎的照片“还原”出被笼子挡住的部分，有点透视的意味。
+已经超出了两个字的字面意思，甚至也超出了频域、空域的范畴，进入了统计的领域。
+
+扑面而来">
+<meta name="twitter:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-wiener.png">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-on-filtering" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/10/07/on-filtering/" class="article-date">
+  <time datetime="2014-10-07T04:35:46.000Z" itemprop="datePublished">2014-10-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      想想滤波
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>摸清背景，理清思路，探讨意义~</p>
+<p>我关于滤波的理解:</p>
+<ol>
+<li>在频域内对信号中某些频率分量进行衰减。关键词：低通、高通。典型的场景是将一段音乐中不同频段的声音分别抽取出来。</li>
+<li>空间域内对不同尺度的细节进行处理。关键词：图像处理，滤镜。典型的场景是将一张被关在笼子里的老虎的照片“还原”出被笼子挡住的部分，有点透视的意味。</li>
+<li>已经超出了两个字的字面意思，甚至也超出了频域、空域的范畴，进入了统计的领域。</li>
+</ol>
+<p>扑面而来的是维纳滤波。先说说维纳其人。</p>
+<a id="more"></a>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-wiener.png" alt=""></p>
+<p>维纳（Wiener）有个智识超常的父亲，不仅会40多种语言，而且据说数学功夫了得。小维纳在其教导下，以至于维纳初出茅庐时就已经“满身神装”。 后来，维纳研究的领域覆盖哲学、数学、物理学、工程学甚至生物学。并且功勋卓著，令人发指。</p>
+<p>维纳不仅是个奇才，也是个奇葩。</p>
+<p>摘一段轶事。维纳在教学上的恶劣表现让学生痛不欲生。有一次维纳在讲解一个定理时，想到了一个很直觉的证明方法，于是只在自己的大脑中推演，一下跳过了很多步骤，只写下一个简单的结果。这当然是为他的学生们无法承受的，于是有人很策略地请求他是否能够用另一种方法再证一遍，他说“当然可以”，马上又在脑中推演，又忘了在黑板上书写，经过几分钟的静默之后，只见他在原来的结果处打了一个查对无误的记号，就下课走了。。。</p>
+<p>回归正题。</p>
+<p>在信号接收时，由于信道的不确定性和其他种种干扰，接收方需要对接收信号对应的发送信号进行估计。为了评价估计的性能，我们定义了不少指标。这里采用误差平方函数的期望作为指标，指标的值越小越好。这就是<code>LMS最小均方算法</code>的出发点。<br>以下是用极不严谨的符号定义来说明问题。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发送信号</td>
+<td>$$S$$</td>
+</tr>
+<tr>
+<td>接收信号</td>
+<td>$$X=S+N$$</td>
+</tr>
+<tr>
+<td>估计值</td>
+<td>$$S = {\bf{T}}\left( X \right)$$</td>
+</tr>
+<tr>
+<td>指标</td>
+<td><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-on-filtering-1.PNG" alt=""></td>
+</tr>
+</tbody>
+</table>
+<p>${\bf{T}}\left(  \bullet  \right)$ 表示一种变换，${\bf{E}}\left(  \bullet  \right)$ 表示求期望。<br>根据LMS算法的结果，对发送信号的估计值应为：<br>$$\hat S = {\bf{E}}(S|X)$$<br>这显然是难以获知的后验信息，所以这个结果仅仅有理论指导意义。多加一层约束，规定：${\bf{T}}\left(  \bullet  \right)$ 为线性运算。则运用信号与系统的观点，可以将这个线性系统用冲激响应$h(t)$（离散形式为$h[n]$）表示。这里以离散形式为例，这个系统的物理实现是一个$N$阶抽头滤波器，滤波器系数可以写成一个列向量:</p>
+<p>$${\bf{h}} = {[h(0),h(1),…,h(N - 1)]^T}$$</p>
+<p>使指标逼近最小值的方法有很多种，如steepest descent（指最佳梯度法）逼近。也就是对$C$关于${\bf{h}}$求偏导，再令偏导为0那一套方法。</p>
+<p>通过迭代逼近最小值这是个大的话题，在自适应滤波的书中讨论的比较细致（如稳定性、收敛性等），这里做一个粗略的分类：</p>
+<ul>
+<li>基于梯度的：牛顿法逼近、最佳梯度法;</li>
+<li>随机梯度法：LMS算法等;</li>
+</ul>
+<p>维纳滤波的数学推导<a href="http://en.wikipedia.org/wiki/Wiener_filter" target="_blank" rel="external">点这里</a>,或者统计信号处理的教材。</p>
+<p>离散形式的结论是：<br>$${\bf{h}} = R_X^{ - 1}{r_{SX}}$$</p>
+<p>这就是维纳滤波器的真身了。看看，结论是如此的简洁！先别兴奋，再对照一下Simon Haykin的《通信系统》一书第三章关于线性预测的讨论：在没有信道影响和噪声的情况下，同样是最小均方准则，结论是：<br>$${\bf{w}} = R_X^{ - 1}{r_X}$$</p>
+<p>绝了！</p>
+<hr>
+<p><strong>refinement</strong></p>
+<ul>
+<li>线性预测和维纳滤波器的推导都是采用最小均方准则的，数学上可以说明这类问题的最优解都是上述形式。所以这不是巧合。</li>
+<li>补充解释下为什么钟爱于“均方准则”：<br>  1 理论推导和实现要比诸如绝对值准则简单；<br>  2 由二次方构成的性能曲面上，偏导为0的点一定是最小值点。</li>
+</ul>
+<hr>
+<p>最后摘一段维纳滤波的限制因素。</p>
+<ul>
+<li>要求接收信号是平稳的随机过程。</li>
+<li>要求知道互相关系数矩阵。</li>
+<li>计算出的系统可能因不满足因果性而无法实现。</li>
+</ul>
+<p>后来的卡尔曼滤波在这一点上有所改进。<br>慢慢发现，与其是滤波，不如说是线性预测，与其说<code>预测</code>，不如说是<code>均衡</code>。这几个概念我一直比较混乱，以后再进行统一和归纳吧。</p>
+<hr>
+<p><strong>refinement</strong></p>
+<h2 id="滤波和预测的区别在于功能而不是算法或结构。前者是为了得到更满意的当前量，后者是为了得到满意的未来值。"><a href="#滤波和预测的区别在于功能而不是算法或结构。前者是为了得到更满意的当前量，后者是为了得到满意的未来值。" class="headerlink" title="滤波和预测的区别在于功能而不是算法或结构。前者是为了得到更满意的当前量，后者是为了得到满意的未来值。"></a>滤波和预测的区别在于功能而不是算法或结构。前者是为了得到更满意的当前量，后者是为了得到满意的未来值。</h2><p>但有一点，滤波已经不再是狭义的“滤波”了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2014/10/07/on-filtering/" data-id="ciuy95lxl000t34uz7xys3trq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信号处理/">信号处理</a></li></ul>
+
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/09/on-cybernetics/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Cybernetics二三事
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2011/07/07/Poem-XiYing/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">昔影</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2014/10/07/on-filtering/" data-title="想想滤波" data-url="http://www.wirelesswhale.com/2014/10/07/on-filtering/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

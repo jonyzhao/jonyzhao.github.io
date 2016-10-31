@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>Andrew NG 公开课笔记 | WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="如题，本文是网络开放课程机器学习（主讲 Andrew NG）纪要的第一篇。先是回忆杀。我第一次听到“数据挖掘”这门研究，大概是2007、08年学校组织参观中科大的时候，某个教授给我们做的科普报告。据介绍，那时的美国已经将这种工具应用到生活中，如NBA火箭队围绕姚明打造的战术体系就借助了数据挖掘。时过境迁，“数据挖掘”这个词在业界被提及的越来越少，取而代之的是“机器学习”、以及近几年的“深度学习”。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Andrew NG 公开课笔记">
+<meta property="og:url" content="http://www.wirelesswhale.com/2015/01/16/andrewngML/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="如题，本文是网络开放课程机器学习（主讲 Andrew NG）纪要的第一篇。先是回忆杀。我第一次听到“数据挖掘”这门研究，大概是2007、08年学校组织参观中科大的时候，某个教授给我们做的科普报告。据介绍，那时的美国已经将这种工具应用到生活中，如NBA火箭队围绕姚明打造的战术体系就借助了数据挖掘。时过境迁，“数据挖掘”这个词在业界被提及的越来越少，取而代之的是“机器学习”、以及近几年的“深度学习”。">
+<meta property="og:image" content="http://jasonzhao.info/blog/wp-content/uploads/2015/01/regression1.png">
+<meta property="og:image" content="http://jasonzhao.info/blog/wp-content/uploads/2015/01/regularizaiton1.png">
+<meta property="og:updated_time" content="2015-09-30T16:13:13.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Andrew NG 公开课笔记">
+<meta name="twitter:description" content="如题，本文是网络开放课程机器学习（主讲 Andrew NG）纪要的第一篇。先是回忆杀。我第一次听到“数据挖掘”这门研究，大概是2007、08年学校组织参观中科大的时候，某个教授给我们做的科普报告。据介绍，那时的美国已经将这种工具应用到生活中，如NBA火箭队围绕姚明打造的战术体系就借助了数据挖掘。时过境迁，“数据挖掘”这个词在业界被提及的越来越少，取而代之的是“机器学习”、以及近几年的“深度学习”。">
+<meta name="twitter:image" content="http://jasonzhao.info/blog/wp-content/uploads/2015/01/regression1.png">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-andrewngML" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/16/andrewngML/" class="article-date">
+  <time datetime="2015-01-16T15:59:50.000Z" itemprop="datePublished">2015-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Andrew NG 公开课笔记
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>如题，本文是网络开放课程机器学习（主讲 Andrew NG）<strong>纪要</strong>的第一篇。先是回忆杀。<br>我第一次听到“数据挖掘”这门研究，大概是2007、08年学校组织参观中科大的时候，某个教授给我们做的科普报告。据介绍，那时的美国已经将这种工具应用到生活中，如NBA火箭队围绕姚明打造的战术体系就借助了数据挖掘。时过境迁，“数据挖掘”这个词在业界被提及的越来越少，取而代之的是“<strong>机器学习</strong>”、以及近几年的“<strong>深度学习</strong>”。笔者当时并没有意识到其潜力。不幸的是，由于一些原因，后来违背自己的生物学理想选择了就业方便的通信工程，如今只能用“一如通信深似海”来形容。不幸中的万幸是，我发现，这个专业也给人以足够的数学和物理基础，来适应这个瞬息万变的世界。</p>
+<p>本系列是笔者用2天时间听完目前的30小节后的一些粗陋笔记，仅供了解机器学习的一些”行话”和工具，消除其“神秘感”。系统的学习，可以参见<a href="http://blog.csdn.net/zqxnum1/article/details/42424583" target="_blank" rel="external">此文</a>给的建议，并阅读一些论文和专著。希望大家都能学习顺利，互相交流。</p>
+<h1 id="一、问题分类"><a href="#一、问题分类" class="headerlink" title="一、问题分类"></a><strong>一、问题分类</strong></h1><p>首先介绍了“Learning”的概念，这里略。Learning大体分为两类：<strong>有监督学习（supervised learning）和无监督学习（unsupervised learning）</strong>。之所以这样区分是因为前者针对的是：Give the right answer of given data.</p>
+<p>有监督学习中又可以分为两大类问题：<strong>回归（regression）和分类（classification）</strong>。</p>
+<p>回归regression：predict the value，找出训练集输入输出的明确关系，然后预测某次输入的输出；例如根据房屋面积估计价格。</p>
+<p>分类classification：通常输入和输出是离散的，整个过程可以类比通信中的译码。例如判断是否是垃圾邮件。</p>
+<p>注意，这两类问题的输入可以是高维的、有具体含义的变量，通常称作“<strong>特征</strong>”。特征的选取在这里并不是自动完成的。特征取的过少，会导致拟合不准确或分类不彻底；特征取的过多带来的稀疏性，不仅使得模型过拟合，而且训练集的相对不足会导致某些算法失效（由于需要矩阵求逆而此时矩阵是稀疏的、奇异的），这些都是后话。</p>
+<h1 id="二、线性回归（Linear-Regression）"><a href="#二、线性回归（Linear-Regression）" class="headerlink" title="二、线性回归（Linear Regression）"></a><strong>二、线性回归（Linear Regression）</strong></h1><p>首先要确定<strong>代价函数</strong>，然后通常的做法是：利用训练集，通过找寻最小化这个代价的条件，从而确定线性回归模型。再用此模型进行预测。</p>
+<p>对于给定的训练集，通常选取的代价是<strong>平方误差</strong>。原因是可以微分，方便推导出闭式解。</p>
+<p>剩下在于如何“找”。</p>
+<a id="more"></a>
+<ol>
+<li><strong>梯度下降法（Gradient Descent）。</strong><br>这个都耳熟能详了，以图示意之。此法的问题在于步长的选取要适中。太小，收敛慢；太大，可能会发散。应用此法的实践经验有：</li>
+</ol>
+<ul>
+<li>Feature Scaling<br>将特征之间数量级的差异“归一化”到相似的尺度，可以提高收敛速度。<em>   variable step<br>可变步长，先大后小。</em>   feature choosing<br><img src="http://jasonzhao.info/blog/wp-content/uploads/2015/01/regression1.png" alt="regression1">2.  <strong>闭式解</strong></li>
+</ul>
+<h1 id="三、逻辑回归（Logistic-Regression）"><a href="#三、逻辑回归（Logistic-Regression）" class="headerlink" title="三、逻辑回归（Logistic Regression）"></a><strong>三、逻辑回归（Logistic Regression）</strong></h1><p>字面上是回归，其实是一种分类算法。若继续使用最小平方错误为代价函数，其可能不再是凸的，难以找到全局最优。故与线性回归采用的代价函数不同，这里定义了一种新的“代价函数”：$J({\bf{\theta }})$，并设立“门限”，作为判断属于哪一类的依据。从Andrew NG的描述中，不难看出逻辑回归的本质就是通信和信号处理中的最小错误概率译码。</p>
+<p>$$J({\bf{\theta }}) = {1 \over m}\sum\limits_{i = 1}^m {\left[ { - {y^i}\log h({x^i}) - (1 - {y^i})\log (1 - h({x^i}))} \right]} $$</p>
+<p>这种代价函数是凸的，仍可以用梯度下降来求解。下面介绍两种求解的方法：梯度下降和牛顿法。后者的代价函数虽然计算复杂（在${\bf{\theta }}$为多维时涉及矩阵求逆$O({n^3})$），但迭代次数少，通常（特征大概小于1000个时）比前者快很多。</p>
+<ol>
+<li>梯度下降法</li>
+</ol>
+<p>对$J({\bf{\theta }})$求偏导的结果与linear regression时一样，区别仅仅在于${h_{\bf{\theta }}}({\bf{x}})$的形式不同。2.  牛顿法</p>
+<h1 id="四、正则化（Regularization）"><a href="#四、正则化（Regularization）" class="headerlink" title="四、正则化（Regularization）"></a><strong>四、正则化（Regularization）</strong></h1><p>不管是regression还是classification中，都存在特征过多而导致overfiting（过拟合）问题。解决方法有：</p>
+<ol>
+<li>reduce features（人工筛选或某些model selection algorithms）</li>
+<li>regularization，在保留所有特征的前提下解决过拟合问题。当存在很多特征都对结果有少量贡献时，此方法效果较好。</li>
+</ol>
+<h2 id="解决过拟合问题的朴素方法"><a href="#解决过拟合问题的朴素方法" class="headerlink" title="解决过拟合问题的朴素方法"></a>解决过拟合问题的朴素方法</h2><p>为了解决过拟合问题，可以在优化目标上加以改动，迫使不重要的特征的系数很小。问题在于通常很难提前知道要对那些特征加以<strong>惩罚（penalty）</strong>。</p>
+<p><img src="http://jasonzhao.info/blog/wp-content/uploads/2015/01/regularizaiton1.png" alt="regularizaiton1"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2015/01/16/andrewngML/" data-id="ciuy95lwa000634uz8gbrts0z" class="article-share-link">Share</a>
+      
+      
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/01/22/poe-5/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          学点经济学（POE-5）：外部性
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/01/05/poe-4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">学点经济学（POE-4）：国际贸易</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2015/01/16/andrewngML/" data-title="Andrew NG 公开课笔记" data-url="http://www.wirelesswhale.com/2015/01/16/andrewngML/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>

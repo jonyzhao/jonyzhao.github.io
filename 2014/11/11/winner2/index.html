@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
+  
+  <title>信道仿真模型：WINNER II (for MIMO) | WirelessWhale</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="姊妹篇《信道仿真模型：3GPP SCM（for MIMO）》中提到了WINNER模型是诺西牵头搞的原3GPP SCM的增强版，确实很强。这里只片面的做一个比较：
+
+关于WINNER模型的官方介绍参见：http://www.ist-winner.org/
+考虑到篇幅，官方将winner模型的文档分成上下两册。上册为主，着重介绍信道模型结构和参数，下册为辅，详细记录了信道测量和分析。另有一份关于mat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信道仿真模型：WINNER II (for MIMO)">
+<meta property="og:url" content="http://www.wirelesswhale.com/2014/11/11/winner2/index.html">
+<meta property="og:site_name" content="WirelessWhale">
+<meta property="og:description" content="姊妹篇《信道仿真模型：3GPP SCM（for MIMO）》中提到了WINNER模型是诺西牵头搞的原3GPP SCM的增强版，确实很强。这里只片面的做一个比较：
+
+关于WINNER模型的官方介绍参见：http://www.ist-winner.org/
+考虑到篇幅，官方将winner模型的文档分成上下两册。上册为主，着重介绍信道模型结构和参数，下册为辅，详细记录了信道测量和分析。另有一份关于mat">
+<meta property="og:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-win1.jpg">
+<meta property="og:updated_time" content="2015-10-01T03:06:49.012Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="信道仿真模型：WINNER II (for MIMO)">
+<meta name="twitter:description" content="姊妹篇《信道仿真模型：3GPP SCM（for MIMO）》中提到了WINNER模型是诺西牵头搞的原3GPP SCM的增强版，确实很强。这里只片面的做一个比较：
+
+关于WINNER模型的官方介绍参见：http://www.ist-winner.org/
+考虑到篇幅，官方将winner模型的文档分成上下两册。上册为主，着重介绍信道模型结构和参数，下册为辅，详细记录了信道测量和分析。另有一份关于mat">
+<meta name="twitter:image" content="http://7xn6e1.com1.z0.glb.clouddn.com/ww-win1.jpg">
+  
+    <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+</head>
+<body>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">WirelessWhale</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+          <a class="main-nav-link" href="/about">About</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.wirelesswhale.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-winner2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2014/11/11/winner2/" class="article-date">
+  <time datetime="2014-11-10T23:48:26.000Z" itemprop="datePublished">2014-11-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      信道仿真模型：WINNER II (for MIMO)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>姊妹篇<a href="http://jasonzhao.info/blog/before2014-10/scm/" target="_blank" rel="external">《信道仿真模型：3GPP SCM（for MIMO）》</a>中提到了WINNER模型是诺西牵头搞的原3GPP SCM的增强版，确实很强。这里只片面的做一个比较：</p>
+<p><img src="http://7xn6e1.com1.z0.glb.clouddn.com/ww-win1.jpg" alt="win1"></p>
+<p>关于WINNER模型的官方介绍参见：<a href="http://www.ist-winner.org/" target="_blank" rel="external">http://www.ist-winner.org/</a></p>
+<p>考虑到篇幅，官方将winner模型的文档分成上下两册。上册为主，着重介绍信道模型结构和参数，下册为辅，详细记录了信道测量和分析。另有一份关于matlab实现的说明文档。</p>
+<p>winner模型是一种geometry-based、stochastic模型，自scm发展而来。其物理参数采集自<strong>欧美</strong>的城市、乡镇或农村。<br><a id="more"></a></p>
+<p>在仿真时：信道参数根据一定的统计分布随机生成；天线图样从模型中剥离，由用户决定；信道实现由详细的小尺度参数（delay、power、AoA、AoD）通过模拟多径叠加完成。这种多径叠加得到信道的方式体现了geometry-based，在MIMO规模较大时，仿真复杂度反而要比correlation-based方法低（参见[1]的3.6.3节）。这种叠加造成了：1、天线元间的信道相关性；2、依赖于地理环境的多普勒频谱的瞬时衰落（<em>不太理解</em>）。</p>
+<p>winner模型框架又可以细分为：generic channel model（GCM）、 clustered delay line（CDL）等。主要特性通过GCM介绍，CDL作为链路级仿真时减小计算量所使用的替代模型，和Tapped Delay Line模型类似。</p>
+<p><strong>GCM有三个层次的随机性</strong>。从上到下依次为：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">大尺度参数（LSP）根据分布函数表随机生成（LSP的空间相关性参见[1]的3.3.1节）；</div><div class="line">小尺度参数根据大尺度参数和分布函数表随机生成；</div><div class="line">各散射体的初相位随机生成。</div></pre></td></tr></table></figure></p>
+<p>从多径角度看信道构成，是rays–&gt;paths(clusters)–&gt;links。从时间上看信道构成，是drops–&gt;segments。每个segment中的LSP是固定的。而每个drop中除了rays的相位，其他参数也都是固定的。drops之间一般彼此不相关，除非选择使用time evolution。time evolution的实现目前只提供一种Basic Method：在时间上划分出若干子区间，逐次用新cluster替换掉旧cluster。</p>
+<p>至此，模型完全非随机了。</p>
+<p>如果只看[1]，其所介绍的特性是明晰的、周全的。但目前的matlab实现代码提供的和[1]中规定的尚有出入，使用者必须亲自实践才能略知一二。而且[2]中涉及的数据结构、参数设置等话题过于庞杂，故以后有时间再续。被频繁关注的Antenna Field Pattern、扇区化、布局等话题在[2]中都有详细的介绍。下面列举一些实践中让我读了文档后仍感到困惑的地方：</p>
+<ol>
+<li><strong>将100MHz带宽通过DownScaling转化成20MHz的具体步骤？matlab版本的代码实现支持此功能吗？</strong></li>
+</ol>
+<p>[2]中没有讲到DownScaling。</p>
+<ol>
+<li><strong>DelaySamplingInterval的设定有哪些讲究？与系统带宽有关吗？</strong></li>
+</ol>
+<p>从[1]中看，此参数只在DownScaling中被提及。[2]中对此参数的解释是：<br><em>DelaySamplingInterval determines the sampling grid in delay domain. All path delays are rounded to the nearest grid point. It can also be set to zero.</em></p>
+<ol>
+<li><strong>TimeSamplingInterval的设定受SampleDensity的影响，设定上有什么讲究？</strong></li>
+</ol>
+<p>不详。</p>
+<ol>
+<li><strong>Drop和Segment等效于多少个sample？（有时为了研究100个sample能不能将信道遍历，需要知道这个细节）</strong></li>
+</ol>
+<p>可以在[1]的表4.5中查到Segment的折算后的长度。对于drop，[1]中的说法是：<br>_<br>When obtaining channel parameters quasi-stationarity has been assumed within intervals of 10-50 wavelengths. Therefore we propose to set the drop duration corresponding to the movement of up to 50 wavelengths.</p>
+<p>In a simulation, the duration of a drop can be selected as desired. It is a common practice to use drops in the simulations…<br>_<br>但[2]中并未对这一要求是怎么实现的加以说明，也没有明确给出drop和segment和sample的对应关系。所以samples之间的相关性和遍历性一概无从得知了。</p>
+<ol>
+<li><strong>天线设置中有个rotation的参数，[Rotx，Roty，Rotz]的含义是？</strong></li>
+</ol>
+<p>根据单位是rad，通过网上搜集资料，最为接近的理解来自：<a href="http://www.siggraph.org/education/materials/HyperGraph/modeling/mod_tran/3drota.htm" target="_blank" rel="external">这里</a></p>
+<p>后来又翻出来rotate_vector.m这个函数，总算看明白了，同网页上讲的一致。</p>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ol>
+<li>IST-WINNER D1.1.2 P. Kyösti, et al., “WINNER II Channel Models”, ver1.1, Sept. 2007. Available: <a href="https://www.ist-winner.org/WINNER2-Deliverables/D1.1.2v1.1.pdf" target="_blank" rel="external">https://www.ist-winner.org/WINNER2-Deliverables/D1.1.2v1.1.pdf</a></li>
+<li>L. Hentilä, P. Kyösti, M. Käske, M. Narandzic, and M. Alatossava. (2007, December.) MATLAB implementation of the WINNER Phase II Channel Model ver1.1 [Online]. Available: <a href="https://www.ist-winner.org/phase_2_model.html" target="_blank" rel="external">https://www.ist-winner.org/phase_2_model.html</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.wirelesswhale.com/2014/11/11/winner2/" data-id="ciuy95lzr002f34uzqxvy3ayd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/信道/">信道</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/通信/">通信</a></li></ul>
+
+	  <!-- JiaThis Button BEGIN -->
+<script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=2101684" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2014/11/12/ray-tracing/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Ray Tracing 信道模型
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2014/11/11/scm/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">信道仿真模型 3GPP-SCM（for MIMO）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+  <section id="comments">
+   <!-- 多说评论框 start -->
+<div id="ds-thread" class="ds-thread" data-thread-key="2014/11/11/winner2/" data-title="信道仿真模型：WINNER II (for MIMO)" data-url="http://www.wirelesswhale.com/2014/11/11/winner2/"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"wirelesswhale"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+  </section>
+  </section>
+        
+          <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">May 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">October 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">February 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">December 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">November 2014</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">October 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2011/07/">July 2011</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/16/talk-about-cocos/">王哲谈Cocos未来</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/10/html5-storage-and-chrome-dev-tools/">HTML5 缓存机制</a>
+          </li>
+        
+          <li>
+            <a href="/2016/06/05/javascript-2-prototype/">Javascript：原型（prototype）</a>
+          </li>
+        
+          <li>
+            <a href="/2016/05/22/javascript-1/">开启新旅程：Javascript</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 Jony Zhao<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+	
+	<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+	
+	<div align="center">
+	<script type="text/javascript" src="//ra.revolvermaps.com/0/0/6.js?i=0v22t60q285&amp;m=2&amp;s=220&amp;c=ff0000&amp;cr1=ffffff&amp;f=arial&amp;l=0" async="async"></script>
+	</div>
+	
+	本站总访问量<span id="busuanzi_value_site_pv"></span>次，本站访客数<span id="busuanzi_value_site_uv"></span>人次，本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+
+  </div>
+  
+  <!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+  
+</footer>
+
+
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav>
+    
+
+<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js“ > </script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
