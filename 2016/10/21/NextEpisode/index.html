@@ -3,17 +3,17 @@
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="utf-8">
   
-  <title>WirelessWhale</title>
+  <title>预（wa）告（keng） | WirelessWhale</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），这些内容要么网上总结的太分散，要么不太对，有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。这里先写个大纲，未来可能用若干篇文章的形式加以补充。可能对初学者更有用，有待老司机们指正。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WirelessWhale">
+<meta property="og:title" content="预（wa）告（keng）">
 <meta property="og:url" content="http://www.wirelesswhale.com/2016/10/21/NextEpisode/index.html">
 <meta property="og:site_name" content="WirelessWhale">
 <meta property="og:description" content="这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），这些内容要么网上总结的太分散，要么不太对，有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。这里先写个大纲，未来可能用若干篇文章的形式加以补充。可能对初学者更有用，有待老司机们指正。">
-<meta property="og:updated_time" content="2016-10-21T08:45:00.596Z">
+<meta property="og:updated_time" content="2016-11-08T14:57:13.521Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WirelessWhale">
+<meta name="twitter:title" content="预（wa）告（keng）">
 <meta name="twitter:description" content="这几个月以来，刨去吃饭睡觉的时间，基本上都在工作，来不及沉淀，有点愧疚。当然也有不少学习体会想整理出来分享（有些涉及项目组知识产权的就不公布了），这些内容要么网上总结的太分散，要么不太对，有时候即使想着自己会重复总结前人已经探明的道路，但终究还是想通过自己的笔进行梳理。这里先写个大纲，未来可能用若干篇文章的形式加以补充。可能对初学者更有用，有待老司机们指正。">
   
     <link rel="alternative" href="/atom.xml" title="WirelessWhale" type="application/atom+xml">
@@ -72,6 +72,16 @@
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      预（wa）告（keng）
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
         <blockquote>
@@ -86,10 +96,18 @@
 <li>可能会尝试深入unity的prefab。</li>
 </ul>
 </li>
-<li><p><strong>uGUI层级管理</strong></p>
+<li><p><strong>uGUI显示层级管理</strong></p>
 <ul>
 <li>作为unity的新UI系统，总体来说挺好用，屏幕自适应方面的工具很强大。</li>
 <li>另一个重要的话题是层级管理，也就是多个界面元素谁显示在谁前面？用<code>camera</code>？<code>sortLayer</code>？<code>canvas</code>？设置中的depth、sortingOrder等等各有什么作用，某些需求应该怎么实现。这种零碎又容易忘的东西需要整理一下。</li>
+</ul>
+</li>
+<li><p><strong>uGUI事件系统</strong></p>
+<ul>
+<li>UI是怎样感知到点击、移入移出、拖动等动作的；拦截消息的层级控制</li>
+<li>如何模拟产生自定义UI事件；</li>
+<li>UI事件是如何传递的</li>
+<li>一个demo</li>
 </ul>
 </li>
 <li><p><strong>自动构建与打包</strong></p>
@@ -99,7 +117,7 @@
 </li>
 <li><p>2D动画工具</p>
 <ul>
-<li>骨骼动画、帧动画；</li>
+<li>骨骼动画、帧动画概念；</li>
 <li>以及unity5的<code>Animator</code>、<code>Animation</code>系统的使用备忘。</li>
 </ul>
 </li>
@@ -122,12 +140,20 @@
 </ul>
 </li>
 </ul>
-<h1 id="最后的吐槽"><a href="#最后的吐槽" class="headerlink" title="最后的吐槽"></a>最后的吐槽</h1><p>阴阳师好看而不好玩，崩坏3的女武神们还在等着我。</p>
+<h1 id="语言相关"><a href="#语言相关" class="headerlink" title="语言相关"></a>语言相关</h1><ul>
+<li>协程</li>
+<li>委托</li>
+<li>C sharp 中与 C++ STL 对应的类 </li>
+</ul>
+<h1 id="最后的吐槽"><a href="#最后的吐槽" class="headerlink" title="最后的吐槽"></a>最后的吐槽</h1><ul>
+<li>阴阳师好看而不好玩，崩坏3的女武神们还在等着我。</li>
+<li>gitbook挺好的，有机会把文章同步上去。</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.wirelesswhale.com/2016/10/21/NextEpisode/" data-id="ciuy95lwa000434uz92mmtarl" class="article-share-link">Share</a>
+      <a data-url="http://www.wirelesswhale.com/2016/10/21/NextEpisode/" data-id="civ9mf5kj0001e4uzij9yrl6r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂谈/">杂谈</a></li></ul>
@@ -158,7 +184,7 @@ var jiathis_config = {data_track_clickback:'true'};
 
   <section id="comments">
    <!-- 多说评论框 start -->
-<div id="ds-thread" class="ds-thread" data-thread-key="2016/10/21/NextEpisode/" data-title="" data-url="http://www.wirelesswhale.com/2016/10/21/NextEpisode/"></div>
+<div id="ds-thread" class="ds-thread" data-thread-key="2016/10/21/NextEpisode/" data-title="预（wa）告（keng）" data-url="http://www.wirelesswhale.com/2016/10/21/NextEpisode/"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -214,7 +240,7 @@ var duoshuoQuery = {short_name:"wirelesswhale"};
       <ul>
         
           <li>
-            <a href="/2016/10/21/NextEpisode/">(no title)</a>
+            <a href="/2016/10/21/NextEpisode/">预（wa）告（keng）</a>
           </li>
         
           <li>
