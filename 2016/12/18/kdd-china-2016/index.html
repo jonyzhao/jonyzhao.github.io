@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.wirelesswhale.com/2016/12/18/kdd-china-2016/index.html">
 <meta property="og:site_name" content="WirelessWhale">
 <meta property="og:description" content="ACM SIGKDD 国际会议（简称KDD）是由ACM的知识发现及数据挖掘专委会（SIGKDD）主办的数据挖掘研究领域的顶级年会。KDD CHINA 是其分会(http://kddchina.org/#/Home)， 成立没多久。今年是由腾讯大数据承办的，有幸拿到一张入场券，便抱着一名好奇的游戏开发者的心态去凑凑热闹，看看机器学习对游戏界可能会有何影响。本文就是一个简要的记录分享。虽然大致知道LR">
-<meta property="og:updated_time" content="2016-12-18T17:30:47.623Z">
+<meta property="og:updated_time" content="2016-12-18T17:41:10.616Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KDD CHINA 2016 的见闻">
 <meta name="twitter:description" content="ACM SIGKDD 国际会议（简称KDD）是由ACM的知识发现及数据挖掘专委会（SIGKDD）主办的数据挖掘研究领域的顶级年会。KDD CHINA 是其分会(http://kddchina.org/#/Home)， 成立没多久。今年是由腾讯大数据承办的，有幸拿到一张入场券，便抱着一名好奇的游戏开发者的心态去凑凑热闹，看看机器学习对游戏界可能会有何影响。本文就是一个简要的记录分享。虽然大致知道LR">
@@ -119,7 +119,9 @@
 <li><p>周志华教授则高屋建瓴地回顾了过去，展望了未来。其认为，深度学习未来几年可能会冷下来，什么会火不知道，但有大概率可能是能充分利用GPU能力的算法架构。因为纵观几十年来的历史，神经网络总是在硬件水平出现突破性进展后3~5年开始<strong>重新</strong>被学术界推崇，这是神经网络的宿命吗？可能是因为：神经网络是最容易直接利用硬件性能提升带来的效果提升的模型。不管是哪个方向会火，机器学习这把火将持续地燃烧。其还提出了<strong>learnware</strong>的构想，预计15年后会形成规模。什么是learnware，意思是将大数据的成熟模型模块化，可以在市场上进行交易。应用者只需根据自身需求获取响应的组件，稍加修改即可，而不是像现在这样重复造轮子。形成这种生态的难点在于“规约”。</p>
 </li>
 </ul>
-<h1 id="麻袋。。。"><a href="#麻袋。。。" class="headerlink" title="麻袋。。。"></a>麻袋。。。</h1><p>好像听来听去没有关于大数据对游戏业的影响啊。这里要补充一下，还是有的，<strong>游戏AI</strong>。腾讯今年成立的AI实验室，有四个研究方向、四个业务方向。其中业务方向之一就是<strong>竞技类游戏的AI</strong>。至于棋类这种具有明确规则的游戏，AI的水平已经通过ALpha GO证明了。不过在于李世石对战的时候，作为人类的李世石也下了“神之一手”，让AlphaGo卡了不少时间。后来查代码日志，发现是因为AlphaGo一致认为自己处于领先，知道10步之后才发现大事不妙，处理了很久。人类的围棋专家对这十来步的评价是：感觉ALphaGo一下变成了业余棋手的水平。这也揭露了当前AI的一个隐患：人类的认知水平在不同状态下差别不会很大，但AI不同，一旦遇到BUG或误判，将会与平时判若两“人”。</p>
+<h1 id="麻袋。。。"><a href="#麻袋。。。" class="headerlink" title="麻袋。。。"></a>麻袋。。。</h1><p>好像听来听去没有关于大数据对游戏业的影响啊。这里要补充一下，还是有的，<strong>游戏AI</strong>。腾讯今年成立的AI实验室，有四个研究方向、四个业务方向。其中业务方向之一就是<strong>竞技类游戏的AI</strong>。</p>
+<p>至于棋类这种具有明确规则的游戏，AI的水平已经通过ALpha GO证明了。不过在于李世石对战的时候，作为人类的李世石也下了“神之一手”，让AlphaGo卡了不少时间。后来查代码日志，发现是因为AlphaGo一致认为自己处于领先，知道10步之后才发现大事不妙，处理了很久。人类的围棋专家对这十来步的评价是：感觉ALphaGo一下变成了业余棋手的水平。这也揭露了当前AI的一个隐患：人类的认知水平在不同状态下差别不会很大，但AI不同，一旦遇到BUG或误判，将会与平时判若两“人”。</p>
+<p>至于牌类，如德州扑克，其AI与上述则很不相同。主要的原因有：1、AI的策略并不会改变手牌的强弱。2、鉴于德州的特点，AI在牌局中没有逻辑优势。3、胜率并不重要，重要的是赢得的筹码量。4、对方行动的好坏难以量化。5、人类的经验并不能像别的领域那样归纳成“专家系统”，勇于辅助AI判断。目前的研究方向主要是基于博弈论，采用 counterfactual regret minimization的方法求解纳什均衡。</p>
 
       
     </div>
@@ -127,6 +129,8 @@
       <a data-url="http://www.wirelesswhale.com/2016/12/18/kdd-china-2016/" data-id="ciwuxihwa000igsuz0v9jn0px" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/杂谈/">杂谈</a></li></ul>
+
 	  <!-- JiaThis Button BEGIN -->
 <script type="text/javascript">
 var jiathis_config = {data_track_clickback:'true'};
@@ -179,7 +183,7 @@ var duoshuoQuery = {short_name:"wirelesswhale"};
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CUDA/">CUDA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/HTML5/">HTML5</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Javascript/">Javascript</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信号处理/">信号处理</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道/">信道</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/信道建模/">信道建模</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/多载波/">多载波</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/建模/">建模</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/抒情/">抒情</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/机器学习/">机器学习</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/杂谈/">杂谈</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/经济学/">经济学</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通信/">通信</a><span class="tag-list-count">7</span></li></ul>
     </div>
   </div>
 
@@ -188,7 +192,7 @@ var duoshuoQuery = {short_name:"wirelesswhale"};
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 10px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 17.5px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
+      <a href="/tags/CUDA/" style="font-size: 10px;">CUDA</a> <a href="/tags/HTML5/" style="font-size: 10px;">HTML5</a> <a href="/tags/Javascript/" style="font-size: 12.5px;">Javascript</a> <a href="/tags/信号处理/" style="font-size: 15px;">信号处理</a> <a href="/tags/信道/" style="font-size: 15px;">信道</a> <a href="/tags/信道建模/" style="font-size: 10px;">信道建模</a> <a href="/tags/多载波/" style="font-size: 10px;">多载波</a> <a href="/tags/建模/" style="font-size: 12.5px;">建模</a> <a href="/tags/抒情/" style="font-size: 10px;">抒情</a> <a href="/tags/机器学习/" style="font-size: 12.5px;">机器学习</a> <a href="/tags/杂谈/" style="font-size: 20px;">杂谈</a> <a href="/tags/经济学/" style="font-size: 20px;">经济学</a> <a href="/tags/通信/" style="font-size: 17.5px;">通信</a>
     </div>
   </div>
 
