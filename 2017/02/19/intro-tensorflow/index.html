@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.wirelesswhale.com/2017/02/19/intro-tensorflow/index.html">
 <meta property="og:site_name" content="WirelessWhale">
 <meta property="og:description" content="虽说俺是个刚入门的游戏前端，但好歹还是对机器学习动过心，自认为也有足够的数学基础。借着一个机缘，开始捣鼓Tensorflow（google开源的深度学习框架），这里稍微记录一下安装中的重要点，一般一晚上可以弄好。">
-<meta property="og:updated_time" content="2017-02-19T09:14:08.439Z">
+<meta property="og:updated_time" content="2017-02-19T09:19:16.698Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow安装">
 <meta name="twitter:description" content="虽说俺是个刚入门的游戏前端，但好歹还是对机器学习动过心，自认为也有足够的数学基础。借着一个机缘，开始捣鼓Tensorflow（google开源的深度学习框架），这里稍微记录一下安装中的重要点，一般一晚上可以弄好。">
@@ -91,12 +91,15 @@
 <ul>
 <li>系统：windows 10 64位</li>
 <li>显卡：NVDIA GT940M （cuda compatibility 5.0，没问题，3.0以上就行了）</li>
-<li>CPU：这个不重要，反正安装的都是GPU版</li>
+<li>CPU：这个不重要，反正安装的都是GPU版（都说个人电脑用CPU跑太慢）</li>
 </ul>
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><ul>
-<li>安装 <a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">cuda toolkit 8.0</a></li>
+<li>安装 <a href="https://developer.nvidia.com/cuda-downloads" target="_blank" rel="external">cuda toolkit 8.0</a><ul>
+<li>CUDA 这里就不再多介绍了，参考以前的<a href="http://www.wirelesswhale.com/2015/02/28/gpgpu-cuda/">博文</a>。</li>
+</ul>
+</li>
 <li>安装 <a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cuDNN</a><ul>
-<li>需要注册 Accelerated Computing Developer Program 会员。126，zjcnvdia2017</li>
+<li>需要注册 Accelerated Computing Developer Program 会员。</li>
 <li>解压后有三个文件夹，将其放在某个目录<code>c:\xxx</code>下，并把这个<code>c:\xxx\bin</code>添加到环境变量 <code>PATH</code>中。</li>
 </ul>
 </li>
