@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://www.wirelesswhale.com/2017/02/19/intro-tensorflow/index.html">
 <meta property="og:site_name" content="WirelessWhale">
 <meta property="og:description" content="虽说俺是个刚入门的游戏前端，但好歹还是对机器学习动过心，自认为也有足够的数学基础。借着一个机缘，开始捣鼓Tensorflow（google开源的深度学习框架），这里稍微记录一下安装中的重要点，一般一晚上可以弄好。">
-<meta property="og:updated_time" content="2017-02-19T09:19:16.698Z">
+<meta property="og:updated_time" content="2017-02-22T14:54:19.780Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tensorflow安装">
 <meta name="twitter:description" content="虽说俺是个刚入门的游戏前端，但好歹还是对机器学习动过心，自认为也有足够的数学基础。借着一个机缘，开始捣鼓Tensorflow（google开源的深度学习框架），这里稍微记录一下安装中的重要点，一般一晚上可以弄好。">
@@ -110,14 +110,19 @@
 </li>
 </ul>
 <h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><p>打开cmd<br><figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">conda create -n tensorflow python=<span class="number">3.5</span>  <span class="comment">//安装 tensorflow 的正确命令</span></div><div class="line"></div><div class="line">activate tensorflow      <span class="comment">//进入虚拟环境</span></div><div class="line">python                   <span class="comment">//打开python</span></div><div class="line"><span class="keyword">import</span> tensorflow as tf  <span class="comment">//会显示成功加载一些库</span></div><div class="line">tf.__version__           <span class="comment">//我安装的是 1.0.0 版</span></div><div class="line"><span class="built_in">exit</span>()                   <span class="comment">//退出python</span></div><div class="line">deactivate tensorflow    <span class="comment">//退出虚拟环境</span></div></pre></td></tr></table></figure></p>
-<h1 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h1><h2 id="交互式jupyter中加载tensorflow"><a href="#交互式jupyter中加载tensorflow" class="headerlink" title="交互式jupyter中加载tensorflow"></a>交互式jupyter中加载tensorflow</h2><p>之前的验证是在命令行中开了一个虚拟环境。直接打开anaconda编写python是加载不了tensorflow模块的。解决方法见<a href="http://www.jianshu.com/p/6766fbcd43b9" target="_blank" rel="external">这里</a>。但我只做了前几步就好了，也就是进入tensorflow虚拟环境中安装了ipython和jupyter：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">conda <span class="keyword">install</span> ipython</div><div class="line">conda <span class="keyword">install</span> jupyter</div></pre></td></tr></table></figure></p>
+<h1 id="小试牛刀"><a href="#小试牛刀" class="headerlink" title="小试牛刀"></a>小试牛刀</h1><h2 id="交互式jupyter中加载tensorflow"><a href="#交互式jupyter中加载tensorflow" class="headerlink" title="交互式jupyter中加载tensorflow"></a>交互式jupyter中加载tensorflow</h2><p>之前的验证是在命令行中开了一个虚拟环境，毕竟是命令行，功能太弱。<br>想着能不能在anaconda IDE或ipython或jupyter notebook这种交互式环境下编写tensorflow应用。<br>交互式的优点是方便写实验代码，就好比本人用了多年的matlab一样，写大程序往往要在交互式窗口中写几行代码实验一番。然鹅，直接打开jupyter notebook编写python是加载不了tensorflow模块的。解决方法见<a href="http://www.jianshu.com/p/6766fbcd43b9" target="_blank" rel="external">这里</a>。但我只做了前几步就好了，也就是进入tensorflow虚拟环境中安装了ipython和jupyter：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">conda <span class="keyword">install</span> ipython</div><div class="line">conda <span class="keyword">install</span> jupyter</div></pre></td></tr></table></figure></p>
+<p>这样一来，以后运行交互式代码就可以：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">cmd</span><span class="bash"></span></div><div class="line">activate tensorflow</div><div class="line">mkdir newFolder</div><div class="line">cd newFolder</div><div class="line">jupyter notebook</div></pre></td></tr></table></figure>
+<p>这时浏览器会打开一个新的页面，new一个python3的notebook，然后就可以愉快的开始了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf</div><div class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</div><div class="line">a= tf.random_normal([<span class="number">2</span>,<span class="number">20</span>])</div><div class="line">se = tf.Session()</div><div class="line">out=se.run(a)</div><div class="line">x,y=out</div><div class="line">plt.scatter(x,y)</div><div class="line">plt.show()</div></pre></td></tr></table></figure>
+<p>按 <code>SHIFT</code>+<code>ENTER</code>，结果就出来了。</p>
 <p>最后再推荐一本tensorflow入门的书：《Tensorflow For Machine Intelligence》。</p>
 <p>就酱。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.wirelesswhale.com/2017/02/19/intro-tensorflow/" data-id="cizcgic7e000ey8uzvt2ytnnh" class="article-share-link">Share</a>
+      <a data-url="http://www.wirelesswhale.com/2017/02/19/intro-tensorflow/" data-id="cizh34jwl000caouzn5gyjx5r" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
